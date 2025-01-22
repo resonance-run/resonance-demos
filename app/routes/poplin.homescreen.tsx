@@ -75,8 +75,8 @@ export default function PoplinDemo({ loaderData }: Route.ComponentProps) {
             } border-8 border-[#ff6189]`}
           >
             <div className="flex h-full flex-col items-center justify-center gap-2">
-              <p className="text-xl uppercase tracking-widest">{cta.description}</p>
-              <p className="text-2xl">{cta.text}</p>
+              <p className="text-xl uppercase tracking-widest" dangerouslySetInnerHTML={{ __html: cta.description }} />
+              <p className="text-2xl" dangerouslySetInnerHTML={{ __html: cta.text }} />
               <Icon name={IconName.arrowRight} size={IconSize.large} className="text-[#ff6189]" />
             </div>
           </div>
