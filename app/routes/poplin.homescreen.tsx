@@ -13,6 +13,13 @@ import { useState, type FormEvent } from 'react';
 import { PersonaPicker } from '~/components/PersonaPicker';
 import type { Route } from './+types/poplin.homescreen';
 
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: 'Poplin Demo - Resonance' },
+    { name: 'description', content: 'Customizations of the Poplin home screen' },
+  ];
+}
+
 interface PoplinCtaHomeScreen {
   route: string;
   text: string;
