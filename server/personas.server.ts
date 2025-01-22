@@ -46,7 +46,6 @@ const defaultDemoUsers: DemoUser[] = [
 
 export const getDemoUser = async (request: Request): Promise<DemoUser> => {
   const cookieHeader = request.headers.get('Cookie');
-  console.log('cookie');
   return (
     (await demoUserCookie.parse(cookieHeader)) || {
       id: 1,
