@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@netlify/functions": "2.8.2",
+    "@react-router/fs-routes": "^7.1.2",
     "@react-router/node": "^7.1.2",
+    "@resonance-run/resonance-node": "^0.5.2",
     "isbot": "^5.1.17",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
