@@ -1,16 +1,8 @@
-import {
-  getDemoUser,
-  getDemoUsers,
-  getUserTierOptions,
-  getUserTypeOptions,
-  setDemoUserCookiesHeaders,
-} from 'server/personas.server';
+import { getDemoUser, setDemoUserCookiesHeaders } from 'server/personas.server';
 import { getResonanceInstance } from 'server/resonance-sdk.server';
-import { data, Link, NavLink, useSubmit } from 'react-router';
+import { data, Link, useSubmit } from 'react-router';
 import { Icon, IconName, IconSize } from '~/components/Icon';
-import { demoUsersCookie } from 'server/cookies.server';
 import { useState, type FormEvent } from 'react';
-import { PersonaPicker } from '~/components/PersonaPicker';
 import type { Route } from './+types/poplin.homescreen';
 
 export function meta({}: Route.MetaArgs) {
@@ -27,21 +19,8 @@ interface PoplinCtaHomeScreen {
   shape: 'circle' | 'square';
 }
 export const loader = async ({ request }: Route.LoaderArgs) => {
-  const [demoUser, demoUsers] = await Promise.all([getDemoUser(request), getDemoUsers(request)]);
-  const userTierOptions = getUserTierOptions();
-  const userTypeOptions = getUserTypeOptions();
+  const demoUser = await getDemoUser(request);
   const resonance = getResonanceInstance();
-  const tabs = [
-    { route: '/poplin/homescreen', name: 'Laundry', icon: IconName.layers },
-    { route: '/poplin/orders', name: 'Orders', icon: IconName.truck },
-    { route: '/poplin/account', name: 'Account', icon: IconName.user },
-    {
-      route: '/poplin/referrals',
-      name: 'Referrals',
-      icon: IconName.gift,
-      isHighlighted: true,
-    },
-  ];
 
   const ctaDefault: PoplinCtaHomeScreen = {
     route: '/learn-more',
@@ -61,22 +40,10 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
     text: '$0 credits - refer & earn',
     route: '/poplin/referrals',
   };
-  return data(
-    {
-      tabs,
-      cta,
-      referrals,
-      demoUser,
-      demoUsers,
-      userTierOptions,
-      userTypeOptions,
-    },
-    {
-      headers: {
-        'Set-Cookie': await demoUsersCookie.serialize(demoUsers),
-      },
-    }
-  );
+  return data({
+    cta,
+    referrals,
+  });
 };
 
 export const action = async ({ request }: Route.ActionArgs) => {
@@ -85,7 +52,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 };
 
 export default function PoplinDemo({ loaderData }: Route.ComponentProps) {
-  const { tabs, cta, referrals, demoUser, demoUsers, userTierOptions, userTypeOptions } = loaderData;
+  const { cta, referrals } = loaderData;
   const [isPersonaPickerVisible, setIsPersonaPickerVisible] = useState<boolean>(false);
   const submit = useSubmit();
 

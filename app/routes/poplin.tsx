@@ -5,13 +5,12 @@ import {
   getUserTypeOptions,
   setDemoUserCookiesHeaders,
 } from 'server/personas.server';
-import { getResonanceInstance } from 'server/resonance-sdk.server';
-import { data, Link, NavLink, Outlet, useSubmit } from 'react-router';
-import { Icon, IconName, IconSize } from '~/components/Icon';
+import { data, NavLink, Outlet, useSubmit } from 'react-router';
+import { Icon, IconName } from '~/components/Icon';
 import { demoUsersCookie } from 'server/cookies.server';
 import { useState, type FormEvent } from 'react';
 import { PersonaPicker } from '~/components/PersonaPicker';
-import type { Route } from './+types/poplin.homescreen';
+import type { Route } from './+types/poplin';
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -20,17 +19,10 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-interface PoplinCtaHomeScreen {
-  route: string;
-  text: string;
-  description: string;
-  shape: 'circle' | 'square';
-}
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const [demoUser, demoUsers] = await Promise.all([getDemoUser(request), getDemoUsers(request)]);
   const userTierOptions = getUserTierOptions();
   const userTypeOptions = getUserTypeOptions();
-  const resonance = getResonanceInstance();
   const tabs = [
     { route: '/poplin/homescreen', name: 'Laundry', icon: IconName.layers },
     { route: '/poplin/orders', name: 'Orders', icon: IconName.truck },
@@ -42,30 +34,9 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
       isHighlighted: true,
     },
   ];
-
-  const ctaDefault: PoplinCtaHomeScreen = {
-    route: '/learn-more',
-    description: 'New order',
-    text: 'Do my laundry',
-    shape: 'circle',
-  };
-
-  const cta: PoplinCtaHomeScreen = await resonance.loadCustomization({
-    customizationType: 'poplin-cta-home-screen',
-    surfaceId: 'DEFAULT',
-    userData: demoUser as unknown as Record<string, unknown>,
-    request,
-    defaultValue: ctaDefault,
-  });
-  const referrals = {
-    text: '$0 credits - refer & earn',
-    route: '/poplin/referrals',
-  };
   return data(
     {
       tabs,
-      cta,
-      referrals,
       demoUser,
       demoUsers,
       userTierOptions,
@@ -85,7 +56,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 };
 
 export default function PoplinDemo({ loaderData }: Route.ComponentProps) {
-  const { tabs, cta, referrals, demoUser, demoUsers, userTierOptions, userTypeOptions } = loaderData;
+  const { tabs, demoUser, demoUsers, userTierOptions, userTypeOptions } = loaderData;
   const [isPersonaPickerVisible, setIsPersonaPickerVisible] = useState<boolean>(false);
   const submit = useSubmit();
 
