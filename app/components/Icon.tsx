@@ -45,6 +45,10 @@ export enum IconName {
   x = 'x',
 }
 
+export const isIconName = (name: string): name is IconName => {
+  return Object.values(IconName).includes(name as IconName);
+};
+
 export enum IconSize {
   xSmall = 12,
   small = 16,
