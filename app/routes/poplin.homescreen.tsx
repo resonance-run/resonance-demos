@@ -1,8 +1,7 @@
 import { getDemoUser, setDemoUserCookiesHeaders } from 'server/personas.server';
 import { getResonanceInstance } from 'server/resonance-sdk.server';
-import { data, Link, useSubmit } from 'react-router';
+import { data, Link } from 'react-router';
 import { Icon, IconName, IconSize } from '~/components/Icon';
-import { useState, type FormEvent } from 'react';
 import type { Route } from './+types/poplin.homescreen';
 
 export function meta({}: Route.MetaArgs) {
@@ -53,13 +52,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
 export default function PoplinDemo({ loaderData }: Route.ComponentProps) {
   const { cta, referrals } = loaderData;
-  const [isPersonaPickerVisible, setIsPersonaPickerVisible] = useState<boolean>(false);
-  const submit = useSubmit();
 
-  const handleUserChange = (event: FormEvent<HTMLFormElement>) => {
-    const formData = new FormData(event.currentTarget);
-    submit(formData, { method: 'POST', preventScrollReset: true });
-  };
   return (
     <>
       <section className="mt-16">
