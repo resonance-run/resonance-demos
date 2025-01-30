@@ -25,6 +25,15 @@
   }
 }
 
+@theme {
+  --copy-drop-shadow-sm: 0 2px 0 black;
+  --copy-drop-shadow-md: 0 2px 2px black;
+}
+
+@utility copy-drop-shadow-* {
+  text-shadow: --value(--copy-drop-shadow-*);
+}
+
 html,
 body {
   @apply bg-white dark:bg-gray-950;
