@@ -8,19 +8,12 @@ import { Loading } from './Loading';
 
 interface PersonaPickerProps {
   demoUser: DemoUser;
-  userTierOptions: string[];
   userTypeOptions: string[];
   userRoleOptions?: [string, string][];
   handleUserChange: (event: FormEvent<HTMLFormElement>) => void;
 }
 
-export const PersonaForm = ({
-  demoUser,
-  userTierOptions,
-  userTypeOptions,
-  userRoleOptions,
-  handleUserChange,
-}: PersonaPickerProps) => {
+export const PersonaForm = ({ demoUser, userTypeOptions, userRoleOptions, handleUserChange }: PersonaPickerProps) => {
   const navigation = useNavigation();
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [isFormVisible, setIsFormVisible] = useState<boolean>(true);
@@ -66,10 +59,6 @@ export const PersonaForm = ({
                   <DemoSelect selectedValue={demoUser.userRole} options={userRoleOptions} name={`demoUser.userRole`} />
                 </p>
               ) : null}
-              <p className="col-span-1 bg-white p-1 dark:bg-gray-900">
-                User tier
-                <DemoSelect selectedValue={demoUser.userTier} options={userTierOptions} name={`demoUser.userTier`} />
-              </p>
               <p className="col-span-2 bg-white p-1 dark:bg-gray-900">
                 User type
                 <DemoSelect selectedValue={demoUser.userType} options={userTypeOptions} name={`demoUser.userType`} />

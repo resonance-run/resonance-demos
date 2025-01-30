@@ -20,17 +20,18 @@ export interface UserRoleDisplayV1 {
 }
 
 export const getDemoUser = async (request: Request): Promise<DemoUser> => {
+  const searchParams = new URL(request.url).searchParams;
   const cookieHeader = request.headers.get('Cookie');
-  return (
-    (await demoUserCookie.parse(cookieHeader)) || {
-      id: 1,
-      label: 'Persona A',
-      firstName: 'John',
-      lastName: 'Lennon',
-      userType: 'FREQUENT',
-      userTier: 'FREE',
-    }
-  );
+  const savedCookie = await demoUserCookie.parse(cookieHeader);
+  return {
+    id: 1,
+    label: 'Persona A',
+    userType: 'FREQUENT',
+    userTier: 'FREE',
+    ...savedCookie,
+    firstName: searchParams.get('firstName') ?? savedCookie?.firstName ?? 'John',
+    lastName: searchParams.get('lastName') ?? savedCookie?.lastName ?? 'Lennon',
+  };
 };
 
 export const getUserTierOptions = (): string[] => ['TRIAL', 'FREE', 'BASIC', 'PRO'];

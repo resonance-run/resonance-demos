@@ -12,13 +12,7 @@ import {
 import type { ChangeEvent, FormEvent } from 'react';
 import invariant from 'tiny-invariant';
 
-import {
-  getDemoUser,
-  getUserRoleOptions,
-  getUserTierOptions,
-  getUserTypeOptions,
-  setDemoUserCookiesHeaders,
-} from 'server/personas.server';
+import { getDemoUser, getUserRoleOptions, getUserTypeOptions, setDemoUserCookiesHeaders } from 'server/personas.server';
 import { getWonderWeatherLocations, isWonderWeatherLocations } from 'server/weather.server';
 import type { Route } from './+types/wonder-weather';
 import { demoUserCookie } from 'server/cookies.server';
@@ -38,14 +32,12 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   });
   invariant(isWonderWeatherLocations(wonderLocations), 'No wonder locations found');
 
-  const userTierOptions = getUserTierOptions();
   const userTypeOptions = getUserTypeOptions();
   const userRoleOptions = await getUserRoleOptions(demoUser as unknown as Record<string, unknown>, request);
   return data(
     {
       wonderLocations,
       demoUser,
-      userTierOptions,
       userTypeOptions,
       userRoleOptions,
       useDefault,
@@ -65,8 +57,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 };
 
 export default function WonderWeather() {
-  const { wonderLocations, demoUser, userTierOptions, userTypeOptions, userRoleOptions, useDefault } =
-    useLoaderData<typeof loader>();
+  const { wonderLocations, demoUser, userTypeOptions, userRoleOptions, useDefault } = useLoaderData<typeof loader>();
   const submit = useSubmit();
   const navigate = useNavigate();
 
@@ -91,7 +82,6 @@ export default function WonderWeather() {
         <div className="p-3">
           <PersonaForm
             demoUser={demoUser}
-            userTierOptions={userTierOptions}
             userTypeOptions={userTypeOptions}
             userRoleOptions={userRoleOptions}
             handleUserChange={handleUserChange}
