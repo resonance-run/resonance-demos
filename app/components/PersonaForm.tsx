@@ -2,7 +2,7 @@ import { Form, useNavigation } from 'react-router';
 import { type FormEvent, type InputHTMLAttributes, useEffect, useState } from 'react';
 
 import { Icon, IconName } from './Icon';
-import type { DemoUser } from 'server/personas.server';
+import type { DemoUser } from '../server/personas.server';
 import { Button, ButtonEmphasis } from './form/Button';
 import { Loading } from './Loading';
 
