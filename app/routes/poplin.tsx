@@ -1,15 +1,9 @@
-import {
-  getDemoUser,
-  getDemoUsers,
-  getUserTierOptions,
-  getUserTypeOptions,
-  setDemoUserCookiesHeaders,
-} from 'server/personas.server';
+import { getDemoUser, getUserTierOptions, getUserTypeOptions, setDemoUserCookiesHeaders } from 'server/personas.server';
 import { data, NavLink, Outlet, useSubmit } from 'react-router';
 import { Icon, IconName } from '~/components/Icon';
-import { demoUsersCookie } from 'server/cookies.server';
+import { demoUserCookie } from 'server/cookies.server';
 import { useState, type FormEvent } from 'react';
-import { PersonaPicker } from '~/components/PersonaPicker';
+import { PersonaForm } from '~/components/PersonaForm';
 import type { Route } from './+types/poplin';
 
 export function meta({}: Route.MetaArgs) {
@@ -20,7 +14,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
-  const [demoUser, demoUsers] = await Promise.all([getDemoUser(request), getDemoUsers(request)]);
+  const demoUser = await getDemoUser(request);
   const userTierOptions = getUserTierOptions();
   const userTypeOptions = getUserTypeOptions();
   const tabs = [
@@ -38,13 +32,12 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
     {
       tabs,
       demoUser,
-      demoUsers,
       userTierOptions,
       userTypeOptions,
     },
     {
       headers: {
-        'Set-Cookie': await demoUsersCookie.serialize(demoUsers),
+        'Set-Cookie': await demoUserCookie.serialize(demoUser),
       },
     }
   );
@@ -56,7 +49,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
 };
 
 export default function PoplinDemo({ loaderData }: Route.ComponentProps) {
-  const { tabs, demoUser, demoUsers, userTierOptions, userTypeOptions } = loaderData;
+  const { tabs, demoUser, userTierOptions, userTypeOptions } = loaderData;
   const [isPersonaPickerVisible, setIsPersonaPickerVisible] = useState<boolean>(false);
   const submit = useSubmit();
 
@@ -68,8 +61,7 @@ export default function PoplinDemo({ loaderData }: Route.ComponentProps) {
     <main className="flex h-screen w-screen flex-col items-center bg-white text-black/80 dark:text-black/80">
       {isPersonaPickerVisible ? (
         <div className="w-full bg-white dark:bg-gray-900">
-          <PersonaPicker
-            demoUsers={demoUsers}
+          <PersonaForm
             demoUser={demoUser}
             userTierOptions={userTierOptions}
             userTypeOptions={userTypeOptions}

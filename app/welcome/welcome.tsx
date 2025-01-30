@@ -1,6 +1,7 @@
 import logo from '~/components/images/resonance-logo.png';
 import iosBadge from '~/components/images/ios-badge.svg';
 import googlePlayBadge from '~/components/images/google-play-badge.png';
+import { Link } from 'react-router';
 
 export function Welcome() {
   return (
@@ -22,9 +23,9 @@ export function Welcome() {
               </a>
             </div>
             <div className="flex items-center justify-center my-4">
-              <a href="https://www.resonance.run/wonder-weather" className="underline text-xl">
+              <Link to="/wonder-weather" className="underline text-xl">
                 Web version
-              </a>
+              </Link>
             </div>
           </section>
         </header>
