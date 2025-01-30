@@ -2,7 +2,7 @@ import { Cacheable } from 'cacheable';
 import { format, getHours } from 'date-fns';
 import invariant from 'tiny-invariant';
 
-import { wmoToDescriptionMap } from 'server/weather-constants.server';
+import { wmoToDescriptionMap } from '~/server/weather-constants.server';
 import { getResonanceInstance } from './resonance-sdk.server';
 
 interface Wonder {

@@ -12,10 +12,15 @@ import {
 import type { ChangeEvent, FormEvent } from 'react';
 import invariant from 'tiny-invariant';
 
-import { getDemoUser, getUserRoleOptions, getUserTypeOptions, setDemoUserCookiesHeaders } from 'server/personas.server';
-import { getWonderWeatherLocations, isWonderWeatherLocations } from 'server/weather.server';
+import {
+  getDemoUser,
+  getUserRoleOptions,
+  getUserTypeOptions,
+  setDemoUserCookiesHeaders,
+} from '../server/personas.server';
+import { getWonderWeatherLocations, isWonderWeatherLocations } from '../server/weather.server';
 import type { Route } from './+types/wonder-weather';
-import { demoUserCookie } from 'server/cookies.server';
+import { demoUserCookie } from '../server/cookies.server';
 import { PersonaForm } from '~/components/PersonaForm';
 
 export const meta: MetaFunction = () => [{ title: 'Wonder Weather' }];

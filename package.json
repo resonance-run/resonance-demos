@@ -3,15 +3,15 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "react-router build && node netlify/prepare.js",
-    "dev": "cross-env NODE_ENV=development node ./dev-server.js",
-    "start": "netlify serve",
+    "build": "react-router build",
+    "dev": "react-router dev",
+    "start": "react-router-serve build/server/index.js",
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
-    "@netlify/functions": "2.8.2",
     "@react-router/fs-routes": "^7.1.2",
     "@react-router/node": "^7.1.2",
+    "@react-router/serve": "7.1.2",
     "@resonance-run/resonance-node": "^0.5.2",
     "cacheable": "^1.8.8",
     "date-fns": "^4.1.0",
@@ -22,6 +22,7 @@
     "tiny-invariant": "^1.3.3"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "^0.7.4",
     "@mjackson/node-fetch-server": "0.3.0",
     "@react-router/dev": "^7.1.2",
     "@types/express": "^5.0.0",
@@ -30,7 +31,6 @@
     "autoprefixer": "^10.4.20",
     "cross-env": "^7.0.3",
     "express": "^4.21.1",
-    "netlify-cli": "^17.38.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.16",
     "typescript": "^5.7.2",

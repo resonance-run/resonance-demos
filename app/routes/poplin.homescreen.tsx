@@ -1,5 +1,5 @@
-import { getDemoUser, setDemoUserCookiesHeaders } from 'server/personas.server';
-import { getResonanceInstance } from 'server/resonance-sdk.server';
+import { getDemoUser, setDemoUserCookiesHeaders } from '../server/personas.server';
+import { getResonanceInstance } from '../server/resonance-sdk.server';
 import { data, Link } from 'react-router';
 import { Icon, IconName, IconSize } from '~/components/Icon';
 import type { Route } from './+types/poplin.homescreen';
