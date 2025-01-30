@@ -118,7 +118,7 @@ export default function WonderWeather() {
               >
                 <div className="relative">
                   <img className="h-24 w-full object-cover" src={location.image} alt={location.name} />
-                  <p className="absolute bottom-1 left-2 text-lg font-semibold">{location.name}</p>
+                  <p className="absolute bottom-1 left-2 text-3xl font-semibold copy-drop-shadow-md">{location.name}</p>
                 </div>
               </NavLink>
             </li>
