@@ -41,7 +41,6 @@ export const loader = async ({ request, params }: Route.LoaderArgs) => {
   });
   const theme = themeMap[wonderTheme.colorTheme] ?? 'res-blue';
 
-  console.log('the location is found?', params.locationId);
   return data(
     {
       location: wonder,

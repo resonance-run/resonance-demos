@@ -56,7 +56,7 @@ export const Button = ({
     <button
       className={`font-semibold ${sizeClasses[size]} ${emphasisClasses[emphasis]} ${
         circle ? 'rounded-full' : 'rounded-md'
-      } ${emphasis !== ButtonEmphasis.tertiary ? 'shadow-xs' : ''} ${baseClasses} ${className}`}
+      } ${emphasis !== ButtonEmphasis.tertiary ? 'shadow-2xs' : ''} ${baseClasses} ${className}`}
       {...args}
     >
       {children ? children : label || ''}
