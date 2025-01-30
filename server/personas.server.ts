@@ -1,5 +1,6 @@
 import { extractObjectFromFormData } from 'utils/formData';
-import { demoUserCookie, demoUsersCookie } from './cookies.server';
+import { demoUserCookie } from './cookies.server';
+import { getResonanceInstance } from './resonance-sdk.server';
 
 export interface DemoUser {
   id: number;
@@ -8,78 +9,64 @@ export interface DemoUser {
   lastName: string;
   userType: string;
   userTier: string;
+  userRole: string;
 }
-const defaultDemoUsers: DemoUser[] = [
-  {
-    id: 1,
-    label: 'Persona A',
-    firstName: 'John',
-    lastName: 'Lennon',
-    userType: 'FREQUENT',
-    userTier: 'FREE',
-  },
-  {
-    id: 2,
-    label: 'Persona B',
-    firstName: 'Paul',
-    lastName: 'McCartney',
-    userType: 'FREQUENT',
-    userTier: 'TRIAL',
-  },
-  {
-    id: 3,
-    label: 'Persona C',
-    firstName: 'George',
-    lastName: 'Harrison',
-    userType: 'INFREQUENT',
-    userTier: 'BASIC',
-  },
-  {
-    id: 4,
-    label: 'Persona D',
-    firstName: 'Ringo',
-    lastName: 'Starr',
-    userType: 'RETURNING',
-    userTier: 'PRO',
-  },
-];
+
+export interface UserRoleDisplayV1 {
+  EXPERT: string;
+  TRAVELER: string;
+  DREAMER: string;
+  ENTHUSIAST: string;
+}
 
 export const getDemoUser = async (request: Request): Promise<DemoUser> => {
+  const searchParams = new URL(request.url).searchParams;
   const cookieHeader = request.headers.get('Cookie');
-  return (
-    (await demoUserCookie.parse(cookieHeader)) || {
-      id: 1,
-      label: 'Persona A',
-      firstName: 'John',
-      lastName: 'Lennon',
-      userType: 'FREQUENT',
-      userTier: 'FREE',
-    }
-  );
-};
-
-export const getDemoUsers = async (request: Request): Promise<DemoUser[]> => {
-  const cookieHeader = request.headers.get('Cookie');
-  return (await demoUsersCookie.parse(cookieHeader)) || defaultDemoUsers;
+  const savedCookie = await demoUserCookie.parse(cookieHeader);
+  return {
+    id: 1,
+    label: 'Persona A',
+    userType: 'FREQUENT',
+    userTier: 'FREE',
+    ...savedCookie,
+    firstName: searchParams.get('firstName') ?? savedCookie?.firstName ?? 'John',
+    lastName: searchParams.get('lastName') ?? savedCookie?.lastName ?? 'Lennon',
+  };
 };
 
 export const getUserTierOptions = (): string[] => ['TRIAL', 'FREE', 'BASIC', 'PRO'];
 export const getUserTypeOptions = (): string[] => ['FREQUENT', 'INFREQUENT', 'RETURNING'];
 
+export const getUserRoleOptions = async (
+  userData: Record<string, unknown>,
+  request: Request
+): Promise<[string, string][]> => {
+  const defaultOptions: UserRoleDisplayV1 = {
+    EXPERT: 'Weather expert',
+    TRAVELER: 'Traveler',
+    DREAMER: 'Dreamer',
+    ENTHUSIAST: 'Weather enthusiast',
+  };
+  const resonance = getResonanceInstance();
+  const result = await resonance.loadCustomization<UserRoleDisplayV1>({
+    customizationType: 'user-role-display-v1',
+    surfaceId: 'USER_ROLE',
+    userData,
+    request,
+    defaultValue: defaultOptions,
+  });
+  return Object.entries(result).map(([key, value]) => [key, value]);
+};
+
 export const setDemoUserCookiesHeaders = async (request: Request): Promise<Headers> => {
   const formData = await request.formData();
   const extractedData = extractObjectFromFormData(formData);
-  const demoUsers: DemoUser[] = extractedData.demoUsers?.filter((u: DemoUser) => Boolean(u));
-  const viewAs = extractedData.viewAs;
+  const viewAs = extractedData.demoUser;
 
   const headers = new Headers();
-  headers.append('Set-Cookie', await demoUsersCookie.serialize(demoUsers));
   const currentDemoUser: DemoUser = await demoUserCookie.parse(request.headers.get('Cookie'));
   if (viewAs || currentDemoUser) {
-    const demoUser = demoUsers
-      .filter((u: DemoUser) => Boolean(u))
-      // Find the new `viewAs` user _or_ update the currentDemoUser with the latest data
-      .find((user: DemoUser) => user.id === (viewAs || currentDemoUser.id));
+    const demoUser = viewAs || currentDemoUser;
     headers.append('Set-Cookie', await demoUserCookie.serialize(demoUser));
   }
   return headers;

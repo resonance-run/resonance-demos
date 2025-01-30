@@ -1,15 +1,9 @@
-import {
-  getDemoUser,
-  getDemoUsers,
-  getUserTierOptions,
-  getUserTypeOptions,
-  setDemoUserCookiesHeaders,
-} from 'server/personas.server';
-import { data, NavLink, Outlet, useSubmit } from 'react-router';
+import { getDemoUser, getUserRoleOptions, getUserTypeOptions, setDemoUserCookiesHeaders } from 'server/personas.server';
+import { data, NavLink, Outlet, redirect, useSubmit } from 'react-router';
 import { Icon, IconName } from '~/components/Icon';
-import { demoUsersCookie } from 'server/cookies.server';
+import { demoUserCookie } from 'server/cookies.server';
 import { useState, type FormEvent } from 'react';
-import { PersonaPicker } from '~/components/PersonaPicker';
+import { PersonaForm } from '~/components/PersonaForm';
 import type { Route } from './+types/poplin';
 
 export function meta({}: Route.MetaArgs) {
@@ -20,9 +14,9 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
-  const [demoUser, demoUsers] = await Promise.all([getDemoUser(request), getDemoUsers(request)]);
-  const userTierOptions = getUserTierOptions();
+  const demoUser = await getDemoUser(request);
   const userTypeOptions = getUserTypeOptions();
+  const userRoleOptions = await getUserRoleOptions(demoUser as unknown as Record<string, unknown>, request);
   const tabs = [
     { route: '/poplin/homescreen', name: 'Laundry', icon: IconName.layers },
     { route: '/poplin/orders', name: 'Orders', icon: IconName.truck },
@@ -38,13 +32,12 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
     {
       tabs,
       demoUser,
-      demoUsers,
-      userTierOptions,
       userTypeOptions,
+      userRoleOptions,
     },
     {
       headers: {
-        'Set-Cookie': await demoUsersCookie.serialize(demoUsers),
+        'Set-Cookie': await demoUserCookie.serialize(demoUser),
       },
     }
   );
@@ -52,11 +45,12 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const headers = await setDemoUserCookiesHeaders(request);
-  return data({}, { headers });
+  const url = new URL(request.url);
+  return redirect(url.pathname + '/homescreen', { headers });
 };
 
 export default function PoplinDemo({ loaderData }: Route.ComponentProps) {
-  const { tabs, demoUser, demoUsers, userTierOptions, userTypeOptions } = loaderData;
+  const { tabs, demoUser, userTypeOptions, userRoleOptions } = loaderData;
   const [isPersonaPickerVisible, setIsPersonaPickerVisible] = useState<boolean>(false);
   const submit = useSubmit();
 
@@ -68,11 +62,10 @@ export default function PoplinDemo({ loaderData }: Route.ComponentProps) {
     <main className="flex h-screen w-screen flex-col items-center bg-white text-black/80 dark:text-black/80">
       {isPersonaPickerVisible ? (
         <div className="w-full bg-white dark:bg-gray-900">
-          <PersonaPicker
-            demoUsers={demoUsers}
+          <PersonaForm
             demoUser={demoUser}
-            userTierOptions={userTierOptions}
             userTypeOptions={userTypeOptions}
+            userRoleOptions={userRoleOptions}
             handleUserChange={handleUserChange}
           />
         </div>
