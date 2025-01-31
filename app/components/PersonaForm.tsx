@@ -25,7 +25,7 @@ export const PersonaForm = ({ demoUser, userTypeOptions, userRoleOptions, handle
     <section
       className={`col-span-10 col-start-2 mb-8 mt-4 bg-gray-300 p-2 text-black/90 dark:bg-gray-700 dark:text-gray-200`}
     >
-      <h3 className={`my-2 flex flex-row justify-between text-xl font-semibold text-black/80 dark:text-gray-200`}>
+      <h3 className={`flex flex-row justify-between text-xl font-semibold text-black/80 dark:text-gray-200`}>
         <span>View as a persona</span>
         <Button type="button" emphasis={ButtonEmphasis.tertiary} onClick={() => setIsFormVisible(!isFormVisible)}>
           <span className="sr-only">{isFormVisible ? 'Hide demo users table' : 'Show demo users table'}</span>
@@ -40,27 +40,27 @@ export const PersonaForm = ({ demoUser, userTypeOptions, userRoleOptions, handle
           <div className="flex flex-col gap-[1px]">
             <div className="gap-[1px] font-semibold">
               <div className="flex flex-row items-center justify-center gap-4 bg-white dark:bg-gray-900">
-                <p className="col-span-1 bg-white p-1 text-center text-xl font-normal dark:bg-gray-900">
+                <p className="col-span-1 bg-white p-1 text-center text-lg font-normal dark:bg-gray-900">
                   <span className={isSaving ? 'opacity-40' : ''}>Viewing as</span>
                 </p>
                 {isSaving ? <Loading /> : <Icon name={IconName.check} className="text-green-500" />}
               </div>
-              <p className="col-span-1 bg-white p-1 dark:bg-gray-900">
-                First name
+              <p className="col-span-1 bg-white p-1 dark:bg-gray-900 flex flex-row gap-2">
+                <span className="text-nowrap">First name</span>
                 <DemoUserInput defaultValue={demoUser.firstName} name={`demoUser.firstName`} />
               </p>
-              <p className="col-span-1 bg-white p-1 dark:bg-gray-900">
-                Last name
+              <p className="col-span-1 bg-white p-1 dark:bg-gray-900 flex flex-row gap-2">
+                <span className="text-nowrap">Last name</span>
                 <DemoUserInput defaultValue={demoUser.lastName} name={`demoUser.lastName`} />
               </p>
               {userRoleOptions?.length ? (
-                <p className="bg-white p-1 dark:bg-gray-900">
-                  User role
+                <p className="bg-white p-1 dark:bg-gray-900 flex flex-row gap-2">
+                  <span className="text-nowrap">User role</span>
                   <DemoSelect selectedValue={demoUser.userRole} options={userRoleOptions} name={`demoUser.userRole`} />
                 </p>
               ) : null}
-              <p className="col-span-2 bg-white p-1 dark:bg-gray-900">
-                User type
+              <p className="col-span-2 bg-white p-1 dark:bg-gray-900 flex flex-row gap-2">
+                <span className="text-nowrap">User type</span>
                 <DemoSelect selectedValue={demoUser.userType} options={userTypeOptions} name={`demoUser.userType`} />
               </p>
             </div>
