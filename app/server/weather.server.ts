@@ -180,8 +180,24 @@ export const getWeatherData = async (location: Wonder): Promise<WeatherData> => 
   } else {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=weather_code,temperature_2m&daily=weather_code,temperature_2m_max,temperature_2m_min,uv_index_max,precipitation_probability_max&temperature_unit=fahrenheit&timezone=${location.timezone}`;
     try {
-      const res = await fetch(url);
-      const data = await res.json();
+      let res = await fetch(url);
+      let data = await res.json();
+      if (data.error) {
+        // So far the only error I have seen is with bad timezone. If other error some up, we can deal with them
+        // more specifically
+        res = await fetch(url.replace(/&timezone=.*&?/, ''));
+        data = await res.json();
+        if (data.error) {
+          return {
+            currentTemperature: 0,
+            currentTemperatureUnit: 'F',
+            currentWeatherCode: 0,
+            currentWeatherDescription: 'Unknown',
+            image: '',
+            forecast: [],
+          };
+        }
+      }
       const weatherData = convertToWeatherData(data);
       await weatherCache.set(location.id, weatherData);
       return weatherData;
@@ -344,8 +360,17 @@ export const getHourlyWeather = async ({
   } else {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=weather_code,temperature_2m,precipitation_probability,precipitation&start_date=${day}&end_date=${day}&temperature_unit=fahrenheit&recipitation_unit=inch&daily=sunrise,sunset&timezone=${timezone}`;
     try {
-      const res = await fetch(url);
-      const data = await res.json();
+      let res = await fetch(url);
+      let data = await res.json();
+      if (data.error) {
+        // So far the only error I have seen is with bad timezone. If other error some up, we can deal with them
+        // more specifically
+        res = await fetch(url.replace(/&timezone=.*&?/, ''));
+        data = await res.json();
+        if (data.error) {
+          return { hours: [] };
+        }
+      }
       const hourlyData = convertToHourlyData(data);
       hourlyCache.set(cacheKey, hourlyData);
       return hourlyData;
@@ -354,9 +379,7 @@ export const getHourlyWeather = async ({
         "We hate to rain on your parade, but we couldn't fetch the weather data. Please try again soon.",
         err
       );
-      return {
-        hours: [],
-      };
+      return { hours: [] };
     }
   }
 };

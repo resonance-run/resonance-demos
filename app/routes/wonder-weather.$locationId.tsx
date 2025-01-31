@@ -127,7 +127,7 @@ export default function WonderWeather() {
             <ol className="my-4 flex flex-col gap-3">
               {fetcher.data.hours.map(hour => (
                 <li
-                  key={hour.hour.getTime()}
+                  key={new Date(hour.hour).getTime()}
                   className={`flex flex-row items-center gap-4 p-4 bg-${theme}-600 rounded-md`}
                 >
                   <div className="w-20">
