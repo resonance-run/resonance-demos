@@ -91,16 +91,6 @@ export default function WonderWeather() {
             userRoleOptions={userRoleOptions}
             handleUserChange={handleUserChange}
           />
-          <div className="col-span-3 col-start-2">
-            <input
-              id="useDefault-checkbox"
-              type="checkbox"
-              name="useDefault"
-              defaultChecked={!useDefault}
-              onChange={toggleUsingCustomizations}
-            />
-            <span className="ml-2">{useDefault ? 'No customizations' : 'Using customizations'}</span>
-          </div>
         </div>
       </section>
       <section className="col-span-12 col-start-1 sm:col-span-4">
@@ -126,6 +116,16 @@ export default function WonderWeather() {
       <section className="col-span-12 sm:col-span-8 sm:col-start-5">
         <Outlet />
       </section>
+      <div className="col-span-3 col-start-2">
+        <input
+          id="useDefault-checkbox"
+          type="checkbox"
+          name="useDefault"
+          defaultChecked={!useDefault}
+          onChange={toggleUsingCustomizations}
+        />
+        <span className="ml-2">{useDefault ? 'No customizations' : 'Using customizations'}</span>
+      </div>
     </section>
   );
 }
