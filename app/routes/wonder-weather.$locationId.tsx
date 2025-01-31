@@ -1,4 +1,4 @@
-import { data, useFetcher, useLoaderData, type MetaFunction } from 'react-router';
+import { data, redirect, useFetcher, useLoaderData, type MetaFunction } from 'react-router';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 
@@ -39,6 +39,11 @@ export const loader = async ({ request, params }: Route.LoaderArgs) => {
     locationId: params.locationId,
     useDefault,
   });
+  // It's possible that the location ID is no longer available to load (if a new customization
+  // shows up, for instance), so redirect back to the index page to start over.
+  if (!wonder || !weatherData || !wonderTheme) {
+    return redirect('/wonder-weather');
+  }
   const theme = themeMap[wonderTheme.colorTheme] ?? 'res-blue';
 
   return data(

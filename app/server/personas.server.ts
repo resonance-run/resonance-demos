@@ -28,6 +28,7 @@ export const getDemoUser = async (request: Request): Promise<DemoUser> => {
     label: 'Persona A',
     userType: 'FREQUENT',
     userTier: 'FREE',
+    userRole: 'EXPERT',
     ...savedCookie,
     firstName: searchParams.get('firstName') ?? savedCookie?.firstName ?? 'John',
     lastName: searchParams.get('lastName') ?? savedCookie?.lastName ?? 'Lennon',

@@ -307,7 +307,9 @@ export const getWonderScreenData = async ({
     locationId,
     useDefault,
   });
-  invariant(isWonderWeatherLocation(wonder), 'Location not found');
+  if (!isWonderWeatherLocation(wonder)) {
+    return { wonder: null, weatherData: null, wonderTheme: null };
+  }
   const [weatherData, { theme: wonderTheme }] = await Promise.all([
     getWeatherData(wonder),
     getWonderWeatherTheme({
