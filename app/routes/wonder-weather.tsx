@@ -110,12 +110,7 @@ export default function WonderWeather() {
         <ul className="sticky top-2 rounded-md text-white/90">
           {wonderLocations.locations.map(location => (
             <li key={location.id} className="flex flex-col text-white">
-              <NavLink
-                to={`${location.id}`}
-                prefetch="intent"
-                preventScrollReset={true}
-                className={({ isActive }) => (isActive ? 'opacity-100' : 'opacity-60 hover:opacity-90')}
-              >
+              <NavLink to={`${location.id}`} prefetch="intent" preventScrollReset={true}>
                 <div className="relative">
                   <img className="h-24 w-full object-cover" src={location.image} alt={location.name} />
                   <p className="absolute bottom-1 left-2 text-3xl font-semibold copy-drop-shadow-center">
