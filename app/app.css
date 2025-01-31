@@ -28,6 +28,7 @@
 @theme {
   --copy-drop-shadow-sm: 0 2px 0 black;
   --copy-drop-shadow-md: 0 2px 2px black;
+  --copy-drop-shadow-center: 0 0 6px black;
 }
 
 @utility copy-drop-shadow-* {
