@@ -308,7 +308,6 @@ export const getWonderScreenData = async ({
     useDefault,
   });
   if (!isWonderWeatherLocation(wonder)) {
-    console.log('no wonder');
     return { wonder: null, weatherData: null, wonderTheme: null };
   }
   const [weatherData, { theme: wonderTheme }] = await Promise.all([
