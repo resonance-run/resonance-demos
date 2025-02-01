@@ -12,6 +12,8 @@ import {
 import type { ChangeEvent, FormEvent } from 'react';
 import invariant from 'tiny-invariant';
 
+import iosBadge from '~/components/images/ios-badge.svg';
+import googlePlayBadge from '~/components/images/google-play-badge.png';
 import {
   getDemoUser,
   getUserRoleOptions,
@@ -125,6 +127,23 @@ export default function WonderWeather() {
           onChange={toggleUsingCustomizations}
         />
         <span className="ml-2">{useDefault ? 'No customizations' : 'Using customizations'}</span>
+      </div>
+      <div className="col-start-1 sm:col-start-2 col-span-11 pb-8 gap-4 flex flex-col items-center">
+        <p className="text-lg font-semibold">Check out this demo in our mobile app.</p>
+        {demoUser.lastName ? (
+          <p>
+            Be sure to enter <span className="font-bold">{demoUser.lastName}</span> in the "Last name" field on the
+            settings screen to see this customized experience.
+          </p>
+        ) : null}
+        <div className="flex flex-row gap-8">
+          <a href="https://apps.apple.com/us/app/wonder-weather-by-resonance/id6739744523">
+            <img src={iosBadge} alt="Download on the App Store" className="h-14" />
+          </a>
+          <a href="https://play.google.com/store/apps/details?id=run.resonance.weather&pcampaignid=web_share">
+            <img src={googlePlayBadge} alt="Get it on Google Play" className="h-14" />
+          </a>
+        </div>
       </div>
     </section>
   );
