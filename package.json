@@ -12,7 +12,7 @@
     "@react-router/fs-routes": "^7.1.2",
     "@react-router/node": "^7.1.2",
     "@react-router/serve": "7.1.2",
-    "@resonance-run/resonance-node": "^0.5.2",
+    "@resonance-run/resonance-node": "^0.6.0",
     "@tailwindcss/postcss": "^4.0.1",
     "@tailwindcss/vite": "^4.0.1",
     "cacheable": "^1.8.8",
