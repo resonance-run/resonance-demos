@@ -103,8 +103,8 @@ export default function WonderWeather() {
           {wonderLocations.locations.map(location => (
             <li key={location.id} className="flex flex-col text-white">
               <NavLink to={`${location.id}`} prefetch="intent" preventScrollReset={true}>
-                <div className="relative">
-                  <img className="h-24 w-full object-cover" src={location.image} alt={location.name} />
+                <div className="relative flex items-center justify-end">
+                  <img className="h-24 max-w-full min-w-1/2 object-cover" src={location.image} alt={location.name} />
                   <p className="absolute bottom-1 left-2 text-3xl font-semibold copy-drop-shadow-center">
                     {location.name}
                   </p>
