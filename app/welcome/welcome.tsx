@@ -1,14 +1,16 @@
 import logo from '~/components/images/resonance-logo.png';
 import iosBadge from '~/components/images/ios-badge.svg';
 import googlePlayBadge from '~/components/images/google-play-badge.png';
-import { Link } from 'react-router';
+import { Link, useSearchParams } from 'react-router';
 
 export function Welcome() {
+  const [searchParams] = useSearchParams();
+  const lastName = searchParams.get('lastName');
   return (
     <main className="flex items-center justify-center pt-16 pb-4">
       <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
         <header className="flex flex-col items-center gap-9">
-          <div className="w-[400px] max-w-[100vw] p-4">
+          <div className="w-[200px] sm:w-[400px] max-w-[100vw] p-4">
             <img src={logo} alt="Resonance Systems" className="w-full" />
           </div>
           <p className="text-5xl font-['Orbitron'] text-center">Resonance Demos</p>
@@ -22,8 +24,14 @@ export function Welcome() {
                 <img src={googlePlayBadge} alt="Get it on Google Play" className="h-14" />
               </a>
             </div>
+            {lastName ? (
+              <p className="text-center mt-4">
+                Note: When you install the mobile app, remember to set the "Last name" field to{' '}
+                <span className="font-bold text-lg">{lastName}</span> on the Settings tab.
+              </p>
+            ) : null}
             <div className="flex items-center justify-center my-4">
-              <Link to="/wonder-weather" className="underline text-xl">
+              <Link to={`/wonder-weather${lastName ? `?lastName=${lastName}` : ''}`} className="underline text-xl">
                 Web version
               </Link>
             </div>

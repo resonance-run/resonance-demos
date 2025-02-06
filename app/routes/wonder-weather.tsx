@@ -96,7 +96,7 @@ export default function WonderWeather() {
         </div>
       </section>
       <section className="col-span-12 col-start-1 sm:col-span-4">
-        <h1 className="bold mb-4 mt-1 py-5 text-4xl">
+        <h1 className="bold mb-4 mt-1 py-5 text-4xl text-center">
           <Link to="/wonder-weather">{wonderLocations.title}</Link>
         </h1>
         <ul className="sticky top-2 rounded-md text-white/90">
