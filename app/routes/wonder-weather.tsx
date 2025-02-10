@@ -97,7 +97,7 @@ export default function WonderWeather() {
       </section>
       <section className="col-span-12 col-start-1 sm:col-span-4">
         <h1 className="bold mb-4 mt-1 py-5 text-4xl text-center">
-          <Link to="/wonder-weather">{wonderLocations.title}</Link>
+          <Link to="/wonder-weather" dangerouslySetInnerHTML={{ __html: wonderLocations.title }} />
         </h1>
         <ul className="sticky top-2 rounded-md text-white/90">
           {wonderLocations.locations.map(location => (
@@ -105,9 +105,10 @@ export default function WonderWeather() {
               <NavLink to={`${location.id}`} prefetch="intent" preventScrollReset={true}>
                 <div className="relative">
                   <img className="h-24 w-full object-cover" src={location.image} alt={location.name} />
-                  <p className="absolute bottom-1 left-2 text-3xl font-semibold copy-drop-shadow-center">
-                    {location.name}
-                  </p>
+                  <p
+                    className="absolute bottom-1 left-2 text-3xl font-semibold copy-drop-shadow-center"
+                    dangerouslySetInnerHTML={{ __html: location.name }}
+                  />
                 </div>
               </NavLink>
             </li>
