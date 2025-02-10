@@ -77,9 +77,10 @@ export default function WonderWeather() {
   return (
     <section className="grid min-h-screen w-full grid-cols-12 gap-4 bg-white font-sans text-black/80 dark:bg-gray-900 dark:text-white">
       <section className="col-span-12">
-        <h1 className="sticky top-0 mb-2 bg-white py-4 text-center font-serif text-6xl text-black/80 dark:bg-gray-900 dark:text-white">
-          {location.name}
-        </h1>
+        <h1
+          className="sticky top-0 mb-2 bg-white py-4 text-center font-serif text-6xl text-black/80 dark:bg-gray-900 dark:text-white"
+          dangerouslySetInnerHTML={{ __html: location.name }}
+        />
         <div className="w-full">
           <img src={location.image} alt={location.name} />
         </div>
