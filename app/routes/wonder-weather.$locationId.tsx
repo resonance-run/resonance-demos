@@ -81,9 +81,10 @@ export default function WonderWeather() {
           className="sticky top-0 mb-2 bg-white py-4 text-center font-serif text-6xl text-black/80 dark:bg-gray-900 dark:text-white"
           dangerouslySetInnerHTML={{ __html: location.name }}
         />
-        <div className="w-full">
+        <div className="w-full flex flex-row justify-center items-center">
           <img src={location.image} alt={location.name} />
         </div>
+        {/*
         <section>
           <div className={`bg-${theme}-600 flex flex-col rounded-b-md px-4 py-8 text-white`}>
             <p className="mb-2 text-xl font-light">Current conditions</p>
@@ -96,8 +97,8 @@ export default function WonderWeather() {
             </div>
             <p className="ml-4 text-2xl">{weather.currentWeatherDescription}</p>
           </div>
-          <div className="mb-4 mt-6 text-3xl font-semibold">7-day forecast</div>
         </section>
+        <div className="mb-4 mt-6 text-3xl font-semibold">7-day forecast</div>
         <ol className="flex flex-row gap-4 overflow-x-auto">
           {weather.forecast.map(day => {
             const isSelectedDate = day.date === hourlyDate;
@@ -152,6 +153,7 @@ export default function WonderWeather() {
             </ol>
           </section>
         ) : null}
+      */}
       </section>
     </section>
   );
