@@ -27,5 +27,5 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
     request,
     defaultValue: defaultTabs,
   });
-  return Response.json({ data: results });
+  return Response.json({ data: results }, { headers: { 'Access-Control-Allow-Origin': '*' } });
 };
