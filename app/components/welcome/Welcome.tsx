@@ -15,7 +15,7 @@ export function Welcome() {
             <img src={logo} alt="Resonance Systems" className="w-full" />
           </div>
           <p className="text-5xl font-['Orbitron'] text-center">Resonance Demos</p>
-          <section className="flex flex-row flex-wrap gap-4">
+          <section className="flex flex-row flex-wrap gap-4 items-center justify-center">
             <DemoContainer
               title="Wonder Weather"
               linkText="Web version"
