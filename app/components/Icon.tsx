@@ -1,4 +1,7 @@
-// A subset of the list found at https://feathericons.com/
+// A subset of the list found at https://lucide.dev/icons/
+
+import { DynamicIcon } from 'lucide-react/dynamic';
+
 // If another icon from that list is needed, just add it to the enum
 export enum IconName {
   archive = 'archive',
@@ -6,14 +9,18 @@ export enum IconName {
   arrowLeft = 'arrow-left',
   arrowRight = 'arrow-right',
   arrowUp = 'arrow-up',
+  book = 'book',
   check = 'check',
+  checkSquare = 'check-square',
   chevronDown = 'chevron-down',
   chevronRight = 'chevron-right',
   chevronLeft = 'chevron-left',
   chevronUp = 'chevron-up',
   circle = 'circle',
   clipboard = 'clipboard',
+  clock = 'clock',
   code = 'code',
+  compass = 'compass',
   copy = 'copy',
   divide = 'divide',
   dollarSign = 'dollar-sign',
@@ -22,6 +29,7 @@ export enum IconName {
   gift = 'gift',
   home = 'home',
   image = 'image',
+  inbox = 'inbox',
   info = 'info',
   layers = 'layers',
   link = 'link',
@@ -33,14 +41,21 @@ export enum IconName {
   moreHorizontal = 'more-horizontal',
   moreVertical = 'more-vertical',
   music = 'music',
+  pageWithWriting = 'file-text',
   pencil = 'edit-2',
   phone = 'phone',
+  plane = 'plane',
   plus = 'plus',
   save = 'save',
   search = 'search',
+  settings = 'settings',
   sliders = 'sliders',
+  sparkles = 'sparkles',
+  template = 'layout-template',
+  trash = 'trash-2',
   truck = 'truck',
   user = 'user',
+  userPlus = 'user-plus',
   users = 'users',
   x = 'x',
 }
@@ -70,18 +85,5 @@ export const Icon = ({ name, size, height = 24, width = 24, className, thin }: I
   if (size) {
     height = width = size;
   }
-  return (
-    <svg
-      width={width}
-      height={height}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={thin ? '1.5' : '2'}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <use href={`/feather-sprite.svg#${name}`} />
-    </svg>
-  );
+  return <DynamicIcon name={name} size={height} className={className} />;
 };
