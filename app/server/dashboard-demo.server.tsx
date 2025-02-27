@@ -59,7 +59,7 @@ export const getNavSections = async (userData: Record<string, unknown>, request:
 
   const teamsSection: NavSection = await resonance.loadCustomization({
     customizationType: 'demo-navigation-section',
-    surfaceId: 'teams',
+    surfaceId: 'team',
     userData,
     request,
     defaultValue: teamsDefault,
