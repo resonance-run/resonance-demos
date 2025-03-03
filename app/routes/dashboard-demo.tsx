@@ -16,11 +16,8 @@ import { DashboardModule } from '~/components/dashboard-demo/Module';
 export const meta = ({ data }: Route.MetaArgs) => [{ title: `${data.demoUser.firstName}'s dashboard` }];
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
-  console.log('HELLO!');
-  const requestUrl = new URL(request.url);
   const demoUser = await getDemoUser(request);
 
-  console.log('getDashboard');
   const [navSections, dashboardModulesList, greeting] = await Promise.all([
     getNavSections(demoUser as unknown as Record<string, unknown>, request),
     getDashboardModules(demoUser as unknown as Record<string, unknown>, request),
