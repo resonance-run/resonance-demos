@@ -23,7 +23,7 @@ export const getNavSections = async (userData: Record<string, unknown>, request:
       { name: 'Inbox', to: '/dashboard-demo', icon: IconName.inbox },
     ],
   };
-  const main: NavSection = await resonance.loadCustomization({
+  const main: NavSection = await resonance.loadCustomization<NavSection>({
     customizationType: 'demo-navigation-section',
     surfaceId: 'main',
     userData,
@@ -85,8 +85,19 @@ export const getNavSections = async (userData: Record<string, unknown>, request:
   return [main, privateSection, teamsSection, admin];
 };
 
-export const getDashboardModules = (userData: Record<string, unknown>, request: Request) => {
-  return ['recent', 'featured', 'learn'];
+export const getDashboardModules = async (userData: Record<string, unknown>, request: Request) => {
+  const resonance = getResonanceInstance();
+  const res = await resonance.loadCustomization({
+    customizationType: 'dashboard-modules',
+    surfaceId: 'DEFAULT',
+    userData,
+    request,
+    defaultValue: {
+      moduleNames: ['earnings', 'recent-items', 'featured', 'learning'],
+    },
+  });
+  console.log(res);
+  return res.moduleNames;
 };
 
 export const getGreeting = (userData: Record<string, unknown>, request: Request) => {

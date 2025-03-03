@@ -20,7 +20,7 @@ const DashboardItem = ({ children, className }: { children: ReactNode; className
   return (
     <a
       href="/dashboard-demo"
-      className={`rounded-xl bg-neutral-800 text-neutral-100 text-sm overflow-hidden ${className}`}
+      className={`rounded-xl bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-100 text-sm overflow-hidden ${className}`}
     >
       {children}
     </a>
@@ -30,8 +30,11 @@ const DashboardItem = ({ children, className }: { children: ReactNode; className
 const RecentItem = ({ name, icon }: { name: string; icon: IconName }) => {
   return (
     <DashboardItem className="w-36">
-      <div className="h-1/3 bg-neutral-700 w-36 relative text-neutral-500">
-        <Icon name={icon} className="absolute -bottom-[12px] left-[18px] bg-neutral-700 rounded-lg" />
+      <div className="h-1/3 bg-neutral-300 dark:bg-neutral-700 w-36 relative text-neutral-500">
+        <Icon
+          name={icon}
+          className="absolute -bottom-[12px] left-[18px] bg-neutral-300 dark:bg-neutral-700 rounded-lg"
+        />
       </div>
       <div className="p-4 pt-8">
         <p>{name}</p>
@@ -57,11 +60,14 @@ const RecentItems = () => {
 const LearnItem = ({ title, img, icon }: { title: string; img: string; icon: IconName }) => {
   return (
     <DashboardItem className="w-72 h-60">
-      <div className="h-1/2 bg-neutral-700 relative text-neutral-500">
+      <div className="h-1/2 bg-neutral-200 dark:bg-neutral-700 relative text-neutral-500">
         <div className="h-full overflow-hidden">
           <img src={img} className="object-cover object-bottom w-full" />
         </div>
-        <Icon name={icon} className="absolute -bottom-[12px] left-[24px] bg-neutral-700/50 rounded-lg" />
+        <Icon
+          name={icon}
+          className="absolute -bottom-[12px] left-[24px] bg-neutral-300 dark:bg-neutral-700/50 rounded-lg"
+        />
       </div>
       <div className="p-4 pt-8">
         <p>{title}</p>
@@ -110,11 +116,27 @@ const Featured = () => {
     </ModuleContainer>
   );
 };
+const Earnings = () => {
+  return (
+    <ModuleContainer name="Earnings" icon={IconName.dollarSign}>
+      <DashboardItem className="w-full h-60 p-8 text-neutral-400 flex flex-row gap-12">
+        <div className="flex flex-col items-center justify-center">
+          <h4 className="flex text-lg flex-col items-center justify-center">
+            <span>You made</span>
+            <span className="text-6xl text-green-700">$914</span>
+            <span>this week</span>
+          </h4>
+        </div>
+      </DashboardItem>
+    </ModuleContainer>
+  );
+};
 
 const ComponentMap = new Map<string, React.FC>([
-  ['recent', RecentItems],
-  ['learn', LearnItems],
+  ['earnings', Earnings],
+  ['recent-items', RecentItems],
   ['featured', Featured],
+  ['learning', LearnItems],
 ]);
 
 export const DashboardModule = ({ name }: DashboardModuleProps) => {

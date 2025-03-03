@@ -16,10 +16,11 @@ import { DashboardModule } from '~/components/dashboard-demo/Module';
 export const meta = ({ data }: Route.MetaArgs) => [{ title: `${data.demoUser.firstName}'s dashboard` }];
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
+  console.log('HELLO!');
   const requestUrl = new URL(request.url);
-  const useDefault = requestUrl.searchParams.has('useDefault');
   const demoUser = await getDemoUser(request);
 
+  console.log('getDashboard');
   const [navSections, dashboardModulesList, greeting] = await Promise.all([
     getNavSections(demoUser as unknown as Record<string, unknown>, request),
     getDashboardModules(demoUser as unknown as Record<string, unknown>, request),
@@ -33,7 +34,6 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
       demoUser,
       userTypeOptions,
       userRoleOptions,
-      useDefault,
       navSections,
       dashboardModulesList,
       greeting,
@@ -52,7 +52,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
   return redirect(url.pathname, { headers });
 };
 
-export default function WonderWeather({ loaderData }: Route.ComponentProps) {
+export default function DashboardDemo({ loaderData }: Route.ComponentProps) {
   const { demoUser, userTypeOptions, userRoleOptions, navSections, dashboardModulesList, greeting } = loaderData;
   const submit = useSubmit();
 
@@ -70,8 +70,8 @@ export default function WonderWeather({ loaderData }: Route.ComponentProps) {
   return (
     <section className="min-h-screen w-full bg-white font-sans text-black/80 sm:gap-6 dark:bg-neutral-950 dark:text-neutral-400">
       <section>
-        <nav className="w-52 fixed top-0 left-0 p-4 text-sm bottom-0 bg-neutral-900">
-          <div className="mb-2 text-neutral-100">
+        <nav className="w-52 fixed top-0 left-0 p-4 text-sm bottom-0 bg-neutral-100 dark:bg-neutral-900">
+          <div className="mb-2 text-neutral-800 dark:text-neutral-100">
             <button className="cursor-pointer" type="button" onClick={() => togglePersonaForm()}>
               {demoUser.firstName} {demoUser.lastName}
             </button>
@@ -99,7 +99,7 @@ export default function WonderWeather({ loaderData }: Route.ComponentProps) {
         </nav>
       </section>
       <main className="ml-52 p-20 flex flex-col gap-8">
-        <h2 className="text-4xl font-semibold text-neutral-100 text-center">{greeting}</h2>
+        <h2 className="text-4xl font-semibold text-neutral-800 dark:text-neutral-100 text-center">{greeting}</h2>
         {/* Persona picker */}
         {showPersonaForm ? (
           <section>
