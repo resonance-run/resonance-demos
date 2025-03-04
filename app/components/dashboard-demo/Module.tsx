@@ -3,6 +3,7 @@ import { Icon, IconName, IconSize } from '../Icon';
 
 interface DashboardModuleProps {
   name: string;
+  content?: LearningItem[];
 }
 
 const ModuleContainer = ({ name, icon, children }: { name: string; icon: IconName; children: ReactNode }) => {
@@ -16,10 +17,10 @@ const ModuleContainer = ({ name, icon, children }: { name: string; icon: IconNam
     </div>
   );
 };
-const DashboardItem = ({ children, className }: { children: ReactNode; className: string }) => {
+const DashboardItem = ({ children, className, url }: { children: ReactNode; className: string; url?: string }) => {
   return (
     <a
-      href="/dashboard-demo"
+      href={url ? url : '/dashboard-demo'}
       className={`rounded-xl bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-100 text-sm overflow-hidden ${className}`}
     >
       {children}
@@ -57,9 +58,21 @@ const RecentItems = () => {
   );
 };
 
-const LearnItem = ({ title, img, icon }: { title: string; img: string; icon: IconName }) => {
+const LearnItem = ({
+  title,
+  img,
+  icon,
+  url,
+  duration,
+}: {
+  title: string;
+  img: string;
+  icon: IconName;
+  duration: string | number;
+  url: string;
+}) => {
   return (
-    <DashboardItem className="w-72 h-60">
+    <DashboardItem className="w-72 h-60" url={url}>
       <div className="h-1/2 bg-neutral-200 dark:bg-neutral-700 relative text-neutral-500">
         <div className="h-full overflow-hidden">
           <img src={img} className="object-cover object-bottom w-full" />
@@ -71,30 +84,34 @@ const LearnItem = ({ title, img, icon }: { title: string; img: string; icon: Ico
       </div>
       <div className="p-4 pt-8">
         <p>{title}</p>
-        <p className="mt-4 text-xs">2m read</p>
+        <p className="mt-4 text-xs">{duration}m read</p>
       </div>
     </DashboardItem>
   );
 };
-const LearnItems = () => {
+
+export interface LearningItem {
+  title: string;
+  icon: IconName;
+  image: string;
+  url: string;
+  duration: string | number;
+}
+
+const LearnItems = ({ content }: { content?: LearningItem[] }) => {
   return (
     <ModuleContainer name="Learn" icon={IconName.book}>
       <div className="flex flex-row gap-6">
-        <LearnItem
-          title="Your first doc"
-          icon={IconName.pencil}
-          img="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d3JpdGluZ3xlbnwwfHwwfHx8MA%3D%3D"
-        />
-        <LearnItem
-          title="Learn the basics"
-          icon={IconName.book}
-          img="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGJvb2t8ZW58MHx8MHx8fDA%3D"
-        />
-        <LearnItem
-          title="Use a template"
-          icon={IconName.template}
-          img="https://images.unsplash.com/photo-1532208248246-ade38054bef6?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTZ8fHN0ZW5jaWx8ZW58MHx8MHx8fDA%3D"
-        />
+        {content?.map(item => (
+          <LearnItem
+            key={item.title}
+            title={item.title}
+            icon={item.icon}
+            img={item.image}
+            url={item.url}
+            duration={item.duration}
+          />
+        ))}
       </div>
     </ModuleContainer>
   );
@@ -132,14 +149,14 @@ const Earnings = () => {
   );
 };
 
-const ComponentMap = new Map<string, React.FC>([
+const ComponentMap = new Map<string, React.FC<{ content?: LearningItem[] }>>([
   ['earnings', Earnings],
   ['recent-items', RecentItems],
   ['featured', Featured],
   ['learning', LearnItems],
 ]);
 
-export const DashboardModule = ({ name }: DashboardModuleProps) => {
+export const DashboardModule = ({ name, content }: DashboardModuleProps) => {
   const ModuleComponent = ComponentMap.get(name);
-  return ModuleComponent ? <ModuleComponent /> : null;
+  return ModuleComponent ? <ModuleComponent content={content} /> : null;
 };
