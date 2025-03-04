@@ -9,19 +9,21 @@ import {
 } from '~/server/personas.server';
 import { demoUserCookie } from '~/server/cookies.server';
 import { useState, type FormEvent } from 'react';
-import { getDashboardModules, getGreeting, getNavSections } from '~/server/dashboard-demo.server';
+import { getDashboardModules, getGreeting, getLearningContent, getNavSections } from '~/server/dashboard-demo.server';
 import { Icon, IconSize } from '~/components/Icon';
 import { DashboardModule } from '~/components/dashboard-demo/Module';
+import { DashboardContent } from '~/components/dashboard-demo/DashboardContent';
 
 export const meta = ({ data }: Route.MetaArgs) => [{ title: `${data.demoUser.firstName}'s dashboard` }];
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const demoUser = await getDemoUser(request);
 
-  const [navSections, dashboardModulesList, greeting] = await Promise.all([
+  const [navSections, dashboardModulesList, greeting, learningContent] = await Promise.all([
     getNavSections(demoUser as unknown as Record<string, unknown>, request),
     getDashboardModules(demoUser as unknown as Record<string, unknown>, request),
     getGreeting(demoUser as unknown as Record<string, unknown>, request),
+    getLearningContent(demoUser as unknown as Record<string, unknown>, request),
   ]);
 
   const userTypeOptions = getUserTypeOptions();
@@ -34,6 +36,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
       navSections,
       dashboardModulesList,
       greeting,
+      learningContent,
     },
     {
       headers: {
@@ -50,7 +53,8 @@ export const action = async ({ request }: Route.ActionArgs) => {
 };
 
 export default function DashboardDemo({ loaderData }: Route.ComponentProps) {
-  const { demoUser, userTypeOptions, userRoleOptions, navSections, dashboardModulesList, greeting } = loaderData;
+  const { demoUser, userTypeOptions, userRoleOptions, navSections, dashboardModulesList, greeting, learningContent } =
+    loaderData;
   const submit = useSubmit();
 
   const [showPersonaForm, setShowPersonaForm] = useState<boolean>(false);
@@ -111,9 +115,7 @@ export default function DashboardDemo({ loaderData }: Route.ComponentProps) {
           </section>
         ) : null}
 
-        {dashboardModulesList.map(module => (
-          <DashboardModule name={module} key={module} />
-        ))}
+        <DashboardContent dashboardModulesList={dashboardModulesList} learningContent={learningContent} />
       </main>
     </section>
   );
